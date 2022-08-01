@@ -29,4 +29,4 @@ jobs:
       - name: Step 4 - Auto-deploy on Tomcat
         run: |
           cd target
-          curl -T usainua_admin-0.0.2.war "http://github:github@213.200.39.253/manager/text/deploy?&path=/&update=true"
+          curl -T usainua_admin-0.0.2.war "http://${{secrets.TOMCAT_LOGIN}}:${{secrets.TOMCAT_PASSWORD}}@213.200.39.253/manager/text/deploy?&path=/&update=true"
