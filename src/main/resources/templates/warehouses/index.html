@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{template/index.html}" lang="en">
+
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <h3 class="card-title">Warehouses</h3>
+                    <div class="card-tools">
+                        <a type="button" class="btn btn-tool btn-outline-success btn-sm" data-toggle="modal"
+                                data-target="#addWarehouse">
+                            <i class="fa-solid fa-circle-plus"></i> Add Warehouse
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4" th:each="warehouse,iterator : ${warehouses}">
+                            <div class="card" th:classappend="${warehouse.main} ? 'card-success' : 'card-dark'">
+                                <div class="card-header">
+                                    <h5 class="card-title"
+                                        th:text="${warehouse.main} ? 'Primary Warehouse' : 'Secondary Warehouse'"></h5>
+                                    <div class="card-tools">
+                                        <a th:href="${'warehouses/delete/' + warehouse.id}"
+                                           class="btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <label for="street">Street</label>
+                                                        <input type="text" class="form-control" id="street" disabled
+                                                               th:placeholder="'Street'"
+                                                               th:value="${warehouse.street}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="city">City</label>
+                                                        <input type="text" class="form-control" id="city" disabled
+                                                               th:placeholder="'City'"
+                                                               th:value="${warehouse.city}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="state">State</label>
+                                                        <input type="text" class="form-control" id="state" disabled
+                                                               th:placeholder="'State'"
+                                                               th:value="${warehouse.state}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="zip">Zip</label>
+                                                        <input type="text" class="form-control" id="zip" disabled
+                                                               th:placeholder="'Zip'"
+                                                               th:value="${warehouse.zip}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="mobilePhone">Mobile Phone Number</label>
+                                                        <input type="text" class="form-control" id="mobilePhone"
+                                                               disabled
+                                                               th:placeholder="'Mobile Phone Number'"
+                                                               th:value="${warehouse.mobilePhone}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="main">Main warehouse</label>
+                                                        <h3>
+                                                            <strong class="badge" th:text="${warehouse.main}" id="main"
+                                                                    th:classappend="${warehouse.main ? 'badge-success' : 'badge-secondary'}"></strong>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- add Shopping Mall Modal -->
+    <div class="modal fade" id="addWarehouse" data-backdrop="static" tabindex="-1"
+         role="dialog" aria-labelledby="addModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <form th:method="POST" th:object="${warehouse}"
+                      th:action="*{'/warehouses/add'}" enctype="multipart/form-data" class="needs-validation">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModal">Adding new Warehouse</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="newStreet">Street</label>
+                                    <input type="text" class="form-control" id="newStreet" required=""
+                                           th:placeholder="'Street'"
+                                           th:field="*{street}">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="newCity">City</label>
+                                    <input type="text" class="form-control" id="newCity" required=""
+                                           th:placeholder="'City'"
+                                           th:field="*{city}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="newState">State</label>
+                                    <input type="text" class="form-control" id="newState" required
+                                           th:placeholder="'State'"
+                                           th:field="*{state}">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="newZip">Zip</label>
+                                    <input type="text" class="form-control" id="newZip" required
+                                           th:placeholder="'Zip'"
+                                           th:field="*{zip}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="USAMobile">Mobile Phone</label>
+                                    <input type="text" class="form-control" id="USAMobile" required
+                                           placeholder="+1 *** *** ** **"
+                                           th:field="*{mobilePhone}">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="newMain">Main warehouse</label>
+                                    <p>
+                                        <input id="newMain" class="form-control" type="checkbox"
+                                               checked data-size="large" data-on-color="success"
+                                               data-off-color="default"
+                                               data-on-text="Yes" data-off-text="No" th:field="*{main}"
+                                               data-toggle="switch">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</html>

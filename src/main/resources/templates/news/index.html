@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template/index.html}" lang="en">
+
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <h3 class="card-title">News</h3>
+                    <div class="card-tools">
+                        <a type="button" class="btn btn-tool btn-outline-success btn-sm" data-toggle="modal"
+                                data-target="#addNews">
+                            <i class="fa-solid fa-circle-plus"></i> Add News
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4" th:each="news : ${newsList}">
+                            <div class="card card-dark">
+                                <div class="card-header">
+                                    <h5 class="card-title" th:text="${news.title}"></h5>
+                                    <div class="card-tools">
+                                        <a th:href="${'news/delete/' + news.id}"
+                                           class="btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group text-center">
+                                            <a class="modalBtn" th:href="${'news/edit/' + news.id}">
+                                                <img th:src="${news.getImagePath()}"></a>
+                                            </div>
+                                            <div class="form-group">
+                                                <p th:text="${news.description}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- add News Modal -->
+    <div class="modal fade" id="addNews" data-backdrop="static" tabindex="-1"
+         role="dialog" aria-labelledby="addModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <form th:method="POST" th:object="${newNews}"
+                      th:action="*{'news/add'}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModal">Adding new News</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label for="newName">Name</label>
+                                    <input type="text" class="form-control" id="newName" required=""
+                                           th:placeholder="'Name'"
+                                           th:field="${newNews.title}">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="addImg">Banner</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="addImg" class="custom-file-input" id="addImg"
+                                               accept="image/png, image/jpeg" required="">
+                                        <label class="custom-file-label" for="addImg">Choose banner</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" rows="5" placeholder="Enter description..."
+                                              th:placeholder="'Description'"
+                                              th:field="${newNews.description}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- edit Shopping Mall Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade modalEdit"
+         id="modalEdit" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form th:method="POST" th:action="*{'news/add'}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal"
+                                type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="id" name="id" type="hidden" value=""/>
+                        <div class="form-group">
+                            <label class="col-form-label" for="title">Name:</label>
+                            <input class="form-control" id="title" name="title" type="text" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="url">Link:</label>
+                            <input class="form-control" id="url" name="url" type="text" value=""/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>
