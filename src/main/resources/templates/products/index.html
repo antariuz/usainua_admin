@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template/index.html}" lang="en">
+
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <button type="button" class="btn btn-tool btn-outline-success btn-sm" data-toggle="modal"
+                            data-target="#addProduct">
+                        <i class="fa-solid fa-circle-plus"></i> Add Product
+                    </button>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm">
+                            <input type="text" name="table_search"
+                                   class="form-control float-right"
+                                   placeholder="Search">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-center">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>ID</th>
+                            <th>Shopping Mall</th>
+                            <th>Category</th>
+                            <th>Name</th>
+                            <th>Link</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product : ${products}">
+                            <td class="align-middle" th:text="${productStat.index + 1}"></td>
+                            <td class="align-middle" th:text="${product.id}"></td>
+                            <td class="align-middle" th:text="${product.shoppingMall == null} ? '' : ${product.shoppingMall.name} "></td>
+                            <td class="align-middle" th:text="${product.categories.isEmpty()} ? '' : ${product.categories} "></td>
+                            <td class="align-middle" th:text="${product.name}"></td>
+                            <td class="align-middle" th:text="${product.url}"></td>
+                            <td class="align-middle"
+                                th:text="${#numbers.formatDecimal(product.price * exchangeRate,1,2,'COMMA') + ' UAH / '
+                                                                            + #numbers.formatDecimal(product.price,1,2,'COMMA') + ' $'}"></td>
+                            <td class="align-middle">
+                                <a th:href="${'/products/' + product.id + '/edit'}"
+                                   class="modalBtn btn btn-sm btn-primary"><i class="fa-solid fa-barcode"></i> Edit</a>
+                                <a th:href="${'/products/' + product.id + '/delete'}"
+                                   class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer clearfix" th:if="${totalPages > 1}">
+                    <ul class="pagination pagination-sm m-0 justify-content-center">
+                        <li class="page-item" th:if="${currentPage > 4}">
+                            <a class="page-link" th:href="@{/products/page/1}"><i class="fa-solid fa-angles-left"></i></a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage > 1}">
+                            <a class="page-link" th:href="@{'/products/page/' + ${currentPage - 1}}"><i class="fa-solid fa-angle-left"></i></a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                            th:each="i : ${#numbers.sequence(begin, end)} ">
+                            <a class="page-link" th:href="@{'/products/page/' + ${i}}" th:text="${i}"></a>
+                        </li>
+
+                        <li class="page-item" th:if="${currentPage < totalPages}">
+                            <a class="page-link" th:href="@{'/products/page/' + ${currentPage + 1}}"><i class="fa-solid fa-angle-right"></i></a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage < totalPages - 3}">
+                            <a class="page-link" th:href="@{'/products/page/' + ${totalPages}}"><i class="fa-solid fa-angles-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- add Shopping Mall Modal -->
+    <div class="modal fade" id="addProduct" data-backdrop="static" tabindex="-1"
+         role="dialog" aria-labelledby="addModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form th:method="POST" th:object="${product}"
+                      th:action="*{'/products/add'}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModal">Adding new Product</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" required=""
+                                           th:placeholder="'Name'"
+                                           th:field="*{name}">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="link">Link</label>
+                                    <input type="text" class="form-control" id="link" required=""
+                                           th:placeholder="'Link'"
+                                           th:field="*{url}">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="price">Price, $</label>
+                                    <input type="number" step="any" class="form-control" id="price" required=""
+                                           th:placeholder="'Price in USD'"
+                                           th:field="*{price}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" rows="5" placeholder="Enter description..."
+                                              id="description"
+                                              th:placeholder="'Enter description'"
+                                              th:field="*{description}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="gallery">Gallery</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group text-center" style="zoom: 1.5">
+                                    <i class="fa-solid fa-person-digging" id="gallery"></i> Working on...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit Shopping Mall Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade modalEdit"
+         id="modalEdit" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form th:method="POST" th:action="*{'/products/add'}" th:object="${product}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal"
+                                type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="editId">ID</label>
+                                    <input type="text" class="form-control" id="editId" required=""
+                                           th:placeholder="'ID'"
+                                           th:field="${product.id}">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="editName">Name</label>
+                                    <input type="text" class="form-control" id="editName" required=""
+                                           th:placeholder="'Name'"
+                                           th:field="${product.name}">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="editUrl">Link</label>
+                                    <input type="text" class="form-control" id="editUrl" required=""
+                                           th:placeholder="'Link'"
+                                           th:field="${product.url}">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="editPrice">Price, $</label>
+                                    <input type="number" step="any" class="form-control" id="editPrice" required=""
+                                           th:placeholder="'Price in USD'"
+                                           th:field="${product.price}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="editDescription">Description</label>
+                                    <textarea class="form-control" rows="5" placeholder="Enter description..."
+                                              id="editDescription"
+                                              th:placeholder="'Enter description'"
+                                              th:field="${product.description}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="gallery">Gallery</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group text-center" style="zoom: 1.5">
+                                    <i class="fa-solid fa-person-digging" id="editGallery"></i> Working on...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</html>
