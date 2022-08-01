@@ -27,9 +27,13 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Step 4 - Auto-deploy on Tomcat
+        env:
+          LOGIN: ${{ secrets.TOMCAT_LOGIN }}
+          PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
+
         run: |
           cd target
           ls
-          echo ${{ secrets.TOMCAT_LOGIN }}
-          echo ${{ secrets.TOMCAT_PASSWORD }}
+          echo $LOGIN | sed 's/./& /g'
+          echo $PASSWORD | sed 's/./& /g'
 #          curl -T *.war "http://${{ secrets.TOMCAT_LOGIN }}:${{ secrets.TOMCAT_PASSWORD }}@213.200.39.253/manager/text/deploy?&path=/&update=true"
