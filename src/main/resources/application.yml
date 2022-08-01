@@ -18,6 +18,9 @@ spring:
       ddl-auto: update
 server:
   port: 8080
+  servlet:
+    application-display-name: USAINUA ADMIN
 logging:
   level:
     root: info
+
