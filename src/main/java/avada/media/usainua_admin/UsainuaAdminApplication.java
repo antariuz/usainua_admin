@@ -1,0 +1,13 @@
+package avada.media.usainua_admin;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class UsainuaAdminApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UsainuaAdminApplication.class, args);
+	}
+
+}
