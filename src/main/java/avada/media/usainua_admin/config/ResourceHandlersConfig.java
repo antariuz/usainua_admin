@@ -13,14 +13,14 @@ public class ResourceHandlersConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-        exposeDirectory("uploaded", registry);
+        exposeDirectory("webapps/ROOT/uploaded", registry);
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("uploaded");
+        Path uploadDir = Paths.get("webapps/ROOT/uploaded");
         String uploadPath = uploadDir.toFile().getAbsolutePath();
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
-        registry.addResourceHandler("/webapps/ROOT/" + dirName + "/**").addResourceLocations("file:/" + uploadPath + "/");
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/" + uploadPath + "/");
     }
 
 }
