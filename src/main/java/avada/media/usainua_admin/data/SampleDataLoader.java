@@ -30,8 +30,13 @@ public class SampleDataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        log.info("Loading some data...");
+        System.out.println(
+                System.getProperty("os.name") + "\n" +
+                        System.getProperty("os.version") + "\n" +
+                        System.getProperty("os.arch")
+        );
         if (roleRepo.count() == 0) {
+            log.info("Loading some data...");
             log.info("Roles...");
             roleRepo.saveAll(new ArrayList<>(Arrays.asList(
                     new Role("ROLE_ROOT"),
