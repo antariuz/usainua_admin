@@ -30,7 +30,7 @@ public class SampleDataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        System.out.println(
+        log.info(
                 System.getProperty("os.name") + "\n" +
                         System.getProperty("os.version") + "\n" +
                         System.getProperty("os.arch")
