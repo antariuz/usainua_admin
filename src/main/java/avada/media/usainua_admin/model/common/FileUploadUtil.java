@@ -12,7 +12,10 @@ import java.nio.file.StandardCopyOption;
 public class FileUploadUtil {
     public static void saveFile(String uploadDir, String fileName,
                                 MultipartFile multipartFile) throws IOException {
-        Path uploadPath = Paths.get("/var/lib/tomcat9/uploaded/" + uploadDir);
+        Path uploadPath = Paths.get("uploaded/" + uploadDir);
+        if (System.getProperty("os.name").contains("Linux")) {
+            uploadPath = Paths.get("/var/lib/tomcat9/uploaded/" + uploadDir);
+        }
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

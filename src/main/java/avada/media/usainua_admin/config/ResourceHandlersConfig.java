@@ -17,7 +17,10 @@ public class ResourceHandlersConfig extends WebMvcConfigurationSupport {
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("/var/lib/tomcat9/uploaded/");
+        Path uploadDir = Paths.get("uploaded");
+        if (System.getProperty("os.name").contains("Linux")) {
+            uploadDir = Paths.get("/var/lib/tomcat9/uploaded/");
+        }
         String uploadPath = uploadDir.toFile().getAbsolutePath();
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
         registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file://" + uploadPath + "/");
