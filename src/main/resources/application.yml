@@ -21,6 +21,14 @@ server:
   servlet:
     application-display-name: USAINUA ADMIN
 logging:
+  file:
+    name: logs/usainua_admin.log
   level:
+    org:
+      hibernate: info
+      springframework: info
     root: info
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
 
