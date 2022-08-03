@@ -51,12 +51,14 @@ public class ProductController {
 
     @PostMapping("add")
     public String addProduct(@ModelAttribute("product") Product productRequest) {
-        Product product = productService.getProductById(productRequest.getId());
-        product.setName(productRequest.getName());
-        product.setUrl(productRequest.getUrl());
-        product.setPrice(productRequest.getPrice());
-        product.setDescription(productRequest.getDescription());
-        productService.saveProduct(product);
+        if (productRequest.getId() != null) {
+            Product product = productService.getProductById(productRequest.getId());
+            product.setName(productRequest.getName());
+            product.setUrl(productRequest.getUrl());
+            product.setPrice(productRequest.getPrice());
+            product.setDescription(productRequest.getDescription());
+            productService.saveProduct(product);
+        } else productService.saveProduct(productRequest);
         return "redirect:/products";
     }
 
