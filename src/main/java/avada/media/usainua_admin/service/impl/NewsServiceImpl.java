@@ -30,8 +30,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News getNewsById(Long id) {
         return newsRepo.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("News not found with id: " + id)
-        );
+                () -> new EntityNotFoundException("News not found with id: " + id));
     }
 
     @Override
