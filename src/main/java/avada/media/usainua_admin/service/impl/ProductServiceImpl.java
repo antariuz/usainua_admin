@@ -4,7 +4,6 @@ import avada.media.usainua_admin.model.Product;
 import avada.media.usainua_admin.repo.ProductRepo;
 import avada.media.usainua_admin.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProductById(Long id) {
         productRepo.deleteProductById(id);
     }
