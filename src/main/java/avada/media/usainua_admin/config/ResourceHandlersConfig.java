@@ -13,7 +13,7 @@ public class ResourceHandlersConfig extends WebMvcConfigurationSupport {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String uploadPath;
         if (System.getProperty("os.name").contains("Linux")) {
-            uploadPath = Paths.get("/tmp/usainua/uploaded/").toFile().getAbsolutePath();
+            uploadPath = Paths.get("/home/black/usainua/uploaded/").toFile().getAbsolutePath();
             registry.addResourceHandler("/uploaded/**").addResourceLocations("file://" + uploadPath + "/");
         } else {
             uploadPath = Paths.get("uploaded").toFile().getAbsolutePath();
