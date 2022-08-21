@@ -14,7 +14,7 @@ public class ResourceHandlersConfig extends WebMvcConfigurationSupport {
         String uploadPath = System.getProperty("os.name").contains("Linux") ?
                 Paths.get("/var/lib/tomcat9/uploaded/").toFile().getAbsolutePath() : Paths.get("uploaded").toFile().getAbsolutePath();
         //        Upload folder
-        registry.addResourceHandler("/uploaded/**").addResourceLocations("file://" + uploadPath + "/");
+        registry.addResourceHandler("/uploaded/**").addResourceLocations("file:/" + uploadPath + "/");
         //        Static folder
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
