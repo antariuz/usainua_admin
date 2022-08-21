@@ -14,7 +14,7 @@ public class FileUploadUtil {
                                 MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get("uploaded/" + uploadDir);
         if (System.getProperty("os.name").contains("Linux")) {
-            uploadPath = Paths.get("/var/lib/tomcat9/uploaded/" + uploadDir);
+            uploadPath = Paths.get("/var/tmp/usainua/uploaded/" + uploadDir);
         }
 
         if (!Files.exists(uploadPath)) {
